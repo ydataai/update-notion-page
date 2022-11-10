@@ -65,7 +65,6 @@ jobs:
 
     needs:
     - prepare
-    - docs-changelog
 
     steps:
     - name: Delete Previous drafts
