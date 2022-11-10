@@ -1,6 +1,5 @@
 {
   "name": "ydataai-update-notion-page",
-  "version": "1.0.0",
   "description": "Update Notion Page",
   "main": "index.js",
   "scripts": {
