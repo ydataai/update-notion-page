@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/actions/javascript-action#readme",
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.10.0",
+    "@notionhq/client": "^2.2.2"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.31.1",

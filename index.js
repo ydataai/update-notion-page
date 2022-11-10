@@ -1,18 +1,45 @@
-const core = require('@actions/core');
-const wait = require('./wait');
+const core = require("@actions/core");
+const { Client } = require("@notionhq/client");
 
-
-// most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const secretToken = core.getInput("notion_secret");
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
+    const notion = new Client({
+      auth: secretToken,
+    });
+    0;
 
-    core.setOutput('time', new Date().toTimeString());
+    const pageUpdateProperties = core.getInput("notion_page_update_body");
+    console.log(pageUpdateProperties);
+
+    let pageId = core.getInput("notion_page_id");
+    const databaseId = core.getInput("notion_database_id");
+    const databaseQueryFilter = core.getInput("notion_database_query_filter");
+
+    if (pageId === "") {
+      if (databaseId === "" || databaseQueryFilter === "") {
+        core.setFailed("either pageId or (databaseId and databaseQueryFilter) must be provided");
+      }
+
+      const databaseQueryResults = (
+        await await notion.databases.query({
+          database_id: databaseId,
+          filter: databaseQueryFilter,
+        })
+      ).results;
+
+      if (databaseQueryResults.length === 0) {
+        core.setFailed("page doesn't exist");
+      }
+
+      pageId = databaseQueryResults[0].id;
+    }
+
+    await notion.pages.update({
+      page_id: pageId,
+      properties: pageUpdateProperties,
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
