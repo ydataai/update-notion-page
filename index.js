@@ -8,7 +8,6 @@ async function run() {
     const notion = new Client({
       auth: secretToken,
     });
-    0;
 
     const pageUpdateProperties = core.getInput("notion_page_update_body");
     console.log(pageUpdateProperties);
