@@ -1,6 +1,9 @@
 name: '"Update Notion Page" Action for GitHub Actions'
 description: 'GitHub Action to update an existing notion page'
 author: "ydataai"
+branding:
+  icon: 'arrow-up-right'
+  color: 'white'
 inputs:
   notion_secret:
     description: 'Notion secret token'
