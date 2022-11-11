@@ -5,7 +5,7 @@
 <!-- toc -->
 
 - [Usage](#usage)
-- [License Summary](#license-summary)
+- [License](#license)
 
 <!-- tocstop -->
 
