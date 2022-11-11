@@ -1,13 +1,22 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: '"Update Notion Page" Action for GitHub Actions'
+description: 'GitHub Action to update an existing notion page'
+author: "ydataai"
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  notion_secret:
+    description: 'Notion secret token'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  notion_page_id:
+    description: 'Notion page ID. This input is required if updating a page directly using its id.'
+    required: false
+  notion_database_id:
+    description: 'Notion database ID. This input is required if updating a page that is part of a database using a query filter.'
+    required: false
+  notion_database_query_filter:
+    description: 'Notion database query filter. This input is required if using a query filter to update a page that is part of a database.'
+    required: false
+  notion_page_update_properties:
+    description: 'Notion page properties to be updated.'
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'
