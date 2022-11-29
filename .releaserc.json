@@ -1,8 +1,14 @@
 {
-    "plugins": [
-        ["@semantic-release/commit-analyzer", {
-            "preset": "angular"
-          }],
-        "@semantic-release/release-notes-generator"
-    ]
+  "branches": ["main"],
+  "tagFormat": "${version}",
+  "plugins": [
+    ["@semantic-release/commit-analyzer", {
+      "preset": "angular",
+      "releaseRules": [
+        {"type": "chore", "scope": "deps", "release": "patch"}
+      ]
+    }],
+     "@semantic-release/release-notes-generator",
+     "@semantic-release/github"
+  ]
 }
