@@ -2102,7 +2102,7 @@ class Client {
             for (const [key, value] of Object.entries(query)) {
                 if (value !== undefined) {
                     if (Array.isArray(value)) {
-                        value.forEach(val => url.searchParams.append(key, String(val)));
+                        value.forEach(val => url.searchParams.append(key, decodeURIComponent(val)));
                     }
                     else {
                         url.searchParams.append(key, String(value));
@@ -2307,7 +2307,7 @@ exports.appendBlockChildren = {
     method: "patch",
     pathParams: ["block_id"],
     queryParams: [],
-    bodyParams: ["children"],
+    bodyParams: ["children", "after"],
     path: (p) => `blocks/${p.block_id}/children`,
 };
 exports.getDatabase = {
@@ -2602,7 +2602,7 @@ function isAPIErrorCode(code) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isFullComment = exports.isFullUser = exports.isFullDatabase = exports.isFullPage = exports.isFullBlock = exports.collectPaginatedAPI = exports.iteratePaginatedAPI = void 0;
+exports.isFullComment = exports.isFullUser = exports.isFullPageOrDatabase = exports.isFullDatabase = exports.isFullPage = exports.isFullBlock = exports.collectPaginatedAPI = exports.iteratePaginatedAPI = void 0;
 /**
  * Returns an async iterator over the results of any paginated Notion API.
  *
@@ -2681,6 +2681,19 @@ function isFullDatabase(response) {
     return "title" in response;
 }
 exports.isFullDatabase = isFullDatabase;
+/**
+ * @returns `true` if `response` is a full `DatabaseObjectResponse` or a full
+ * `PageObjectResponse`.
+ */
+function isFullPageOrDatabase(response) {
+    if (response.object === "database") {
+        return isFullDatabase(response);
+    }
+    else {
+        return isFullPage(response);
+    }
+}
+exports.isFullPageOrDatabase = isFullPageOrDatabase;
 /**
  * @returns `true` if `response` is a full `UserObjectResponse`.
  */
@@ -7819,7 +7832,7 @@ module.exports = require("zlib");
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"@notionhq/client","version":"2.2.4","description":"A simple and easy to use client for the Notion API","engines":{"node":">=12"},"homepage":"https://developers.notion.com/docs/getting-started","bugs":{"url":"https://github.com/makenotion/notion-sdk-js/issues"},"repository":{"type":"git","url":"https://github.com/makenotion/notion-sdk-js/"},"keywords":["notion","notionapi","rest","notion-api"],"main":"./build/src","types":"./build/src/index.d.ts","scripts":{"prepare":"npm run build","prepublishOnly":"npm run checkLoggedIn && npm run lint && npm run test","build":"tsc","prettier":"prettier --write .","lint":"prettier --check . && eslint . --ext .ts && cspell \'**/*\' ","test":"jest ./test","check-links":"git ls-files | grep md$ | xargs -n 1 markdown-link-check","prebuild":"npm run clean","clean":"rm -rf ./build","checkLoggedIn":"./scripts/verifyLoggedIn.sh"},"author":"","license":"MIT","files":["build/package.json","build/src/**"],"dependencies":{"@types/node-fetch":"^2.5.10","node-fetch":"^2.6.1"},"devDependencies":{"@types/jest":"^28.1.4","@typescript-eslint/eslint-plugin":"^5.39.0","@typescript-eslint/parser":"^5.39.0","cspell":"^5.4.1","eslint":"^7.24.0","jest":"^28.1.2","markdown-link-check":"^3.8.7","prettier":"^2.3.0","ts-jest":"^28.0.5","typescript":"^4.8.4"}}');
+module.exports = JSON.parse('{"name":"@notionhq/client","version":"2.2.9","description":"A simple and easy to use client for the Notion API","engines":{"node":">=12"},"homepage":"https://developers.notion.com/docs/getting-started","bugs":{"url":"https://github.com/makenotion/notion-sdk-js/issues"},"repository":{"type":"git","url":"https://github.com/makenotion/notion-sdk-js/"},"keywords":["notion","notionapi","rest","notion-api"],"main":"./build/src","types":"./build/src/index.d.ts","scripts":{"prepare":"npm run build","prepublishOnly":"npm run checkLoggedIn && npm run lint && npm run test","build":"tsc","prettier":"prettier --write .","lint":"prettier --check . && eslint . --ext .ts && cspell \'**/*\' ","test":"jest ./test","check-links":"git ls-files | grep md$ | xargs -n 1 markdown-link-check","prebuild":"npm run clean","clean":"rm -rf ./build","checkLoggedIn":"./scripts/verifyLoggedIn.sh"},"author":"","license":"MIT","files":["build/package.json","build/src/**"],"dependencies":{"@types/node-fetch":"^2.5.10","node-fetch":"^2.6.1"},"devDependencies":{"@types/jest":"^28.1.4","@typescript-eslint/eslint-plugin":"^5.39.0","@typescript-eslint/parser":"^5.39.0","cspell":"^5.4.1","eslint":"^7.24.0","jest":"^28.1.2","markdown-link-check":"^3.8.7","prettier":"^2.8.8","ts-jest":"^28.0.5","typescript":"^4.8.4"}}');
 
 /***/ }),
 
