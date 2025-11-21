@@ -20,7 +20,7 @@ jobs:
       version: v${{ steps.version.outputs.value }}
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         token: ${{ secrets.ACCESS_TOKEN }}
 
